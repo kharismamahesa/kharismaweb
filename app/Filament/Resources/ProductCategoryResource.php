@@ -20,7 +20,7 @@ class ProductCategoryResource extends Resource
     protected static ?string $navigationLabel = 'Kategori Produk';
     protected static ?string $pluralModelLabel = 'Kategori Produk';
     protected static ?string $modelLabel = 'Kategori Produk';
-    protected static ?string $navigationGroup = 'Manajemen Data';
+    protected static ?string $navigationGroup = 'Toko';
 
     public static function form(Form $form): Form
     {

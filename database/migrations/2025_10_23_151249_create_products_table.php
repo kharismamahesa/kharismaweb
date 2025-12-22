@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->longText('description')->nullable();
+            $table->decimal('cost_price', 12, 2)->default(0);
+            $table->decimal('selling_price', 12, 2)->default(0);
+            $table->integer('stock')->default(0);
             $table->enum('status', ['draft', 'published', 'archived'])->default('published');
             $table->timestamps();
         });

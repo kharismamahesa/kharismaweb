@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('shipping_cost', 12, 2)->default(0);
             $table->decimal('discount', 12, 2)->default(0);
             $table->decimal('total', 12, 2);
-            $table->enum('payment_method', ['credit_card', 'bank_transfer', 'e_wallet', 'cash_on_delivery']);
+            $table->enum('payment_method', ['bank_transfer', 'e_wallet', 'cash_on_delivery']);
             $table->timestamp('placed_at')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();

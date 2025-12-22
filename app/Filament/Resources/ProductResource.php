@@ -7,14 +7,15 @@ use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
     protected static ?string $navigationLabel = 'Produk';
     protected static ?string $pluralModelLabel = 'Produk';
     protected static ?string $modelLabel = 'Produk';
@@ -24,28 +25,51 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\Select::make('category_id')
-                    ->label('Kategori')
                     ->relationship('category', 'name')
-                    ->required(),
+                    ->required()
+                    ->preload()
+                    ->searchable(),
 
                 Forms\Components\TextInput::make('name')
-                    ->label('Nama Produk')
                     ->required()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state))),
+                    ->afterStateUpdated(
+                        fn($state, callable $set) =>
+                        $set('slug', Str::slug($state))
+                    ),
 
                 Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
-                    ->disabled()
-                    ->dehydrated(),
+                    ->required()
+                    ->unique(ignoreRecord: true),
 
                 Forms\Components\Textarea::make('description')
-                    ->label('Deskripsi')
-                    ->rows(4),
+                    ->columnSpanFull(),
+
+                Forms\Components\Fieldset::make('Pricing')
+                    ->schema([
+
+                        Forms\Components\TextInput::make('cost_price')
+                            ->label('Cost Price')
+                            ->numeric()
+                            ->prefix('Rp')
+                            ->required(),
+
+                        Forms\Components\TextInput::make('selling_price')
+                            ->label('Selling Price')
+                            ->numeric()
+                            ->prefix('Rp')
+                            ->required(),
+
+                        Forms\Components\TextInput::make('stock')
+                            ->numeric()
+                            ->required(),
+
+                    ])
+                    ->columns(3),
 
                 Forms\Components\Select::make('status')
-                    ->label('Status')
                     ->options([
                         'draft' => 'Draft',
                         'published' => 'Published',
@@ -53,43 +77,6 @@ class ProductResource extends Resource
                     ])
                     ->default('published')
                     ->required(),
-
-                Forms\Components\Section::make('Varian Produk')
-                    ->schema([
-                        Forms\Components\Repeater::make('variants')
-                            ->relationship('variants')
-                            ->schema([
-                                Forms\Components\TextInput::make('sku')
-                                    ->label('SKU')
-                                    ->required()
-                                    ->unique(ignoreRecord: true)
-                                    ->helperText('Kode unik produk, contoh: AMPLANG-1KG'),
-
-                                Forms\Components\KeyValue::make('attributes')
-                                    ->label('Atribut')
-                                    ->keyLabel('Nama Atribut')
-                                    ->valueLabel('Nilai')
-                                    ->helperText('Contoh: size → 1 KG, weight → 1'),
-
-                                Forms\Components\TextInput::make('price')
-                                    ->label('Harga')
-                                    ->numeric()
-                                    ->prefix('Rp')
-                                    ->required(),
-
-                                Forms\Components\TextInput::make('stock')
-                                    ->label('Stok')
-                                    ->numeric()
-                                    ->default(0)
-                                    ->minValue(0),
-                            ])
-                            ->columns(2)
-                            ->defaultItems(1)
-                            ->collapsible()
-                            ->itemLabel(fn(array $state): ?string => $state['sku'] ?? null)
-                            ->label('Daftar Varian'),
-                    ])
-                    ->collapsible(),
 
                 Forms\Components\Section::make('Gambar Produk')
                     ->schema([
@@ -125,6 +112,7 @@ class ProductResource extends Resource
                             ->collapsible(),
                     ])
                     ->collapsible(),
+
             ]);
     }
 
@@ -133,7 +121,7 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('media_images')
-                    ->label('Gambar')
+                    ->label('GAMBAR')
                     ->circular()
                     ->stacked()
                     ->size(50)
@@ -145,37 +133,37 @@ class ProductResource extends Resource
                     }),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Produk')
+                    ->label('NAMA')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Kategori')
-                    ->sortable()
-                    ->searchable(),
+                    ->label('KATEGORI')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('selling_price')
+                    ->money('IDR')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('stock')
+                    ->label('STOK')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->label('STATUS')
+                    ->color(fn(string $state) => match ($state) {
                         'draft' => 'gray',
                         'published' => 'success',
                         'archived' => 'warning',
-                        default => 'gray',
-                    })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'draft' => 'Draft',
-                        'published' => 'Published',
-                        'archived' => 'Archived',
-                        default => ucfirst($state),
-                    })
-                    ->sortable()
-                    ->searchable(),
+                    }),
 
-                Tables\Columns\TextColumn::make('variants_count')
-                    ->label('Jumlah Varian')
-                    ->counts('variants'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('DIBUAT PADA')
+                    ->date()
+                    ->sortable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
@@ -185,14 +173,19 @@ class ProductResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->button(),
-                Tables\Actions\DeleteAction::make()->button(),
+                Tables\Actions\EditAction::make()->label('Edit')->button(),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->button(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            // nanti bisa tambahkan ProductMediaRelationManager
+        ];
     }
 
     public static function getPages(): array

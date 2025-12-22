@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductCategory;
+use App\Models\ProductMedia;
 
 class Product extends Model
 {
@@ -14,6 +16,9 @@ class Product extends Model
         'name',
         'slug',
         'description',
+        'cost_price',
+        'selling_price',
+        'stock',
         'status',
     ];
 
@@ -30,11 +35,6 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id');
-    }
-
-    public function variants()
-    {
-        return $this->hasMany(ProductVariant::class);
     }
 
     public function media()

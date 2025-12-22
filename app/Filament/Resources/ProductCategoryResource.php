@@ -3,23 +3,25 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductCategoryResource\Pages;
-use App\Filament\Resources\ProductCategoryResource\RelationManagers;
 use App\Models\ProductCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductCategoryResource extends Resource
 {
     protected static ?string $model = ProductCategory::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationLabel = 'Kategori Produk';
+
     protected static ?string $pluralModelLabel = 'Kategori Produk';
+
     protected static ?string $modelLabel = 'Kategori Produk';
+
     protected static ?string $navigationGroup = 'Toko';
 
     public static function form(Form $form): Form
@@ -49,10 +51,10 @@ class ProductCategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nama')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('slug')->label('Slug')->sortable(),
-                Tables\Columns\IconColumn::make('is_active')->boolean()->label('Aktif'),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')->dateTime(),
+                Tables\Columns\TextColumn::make('name')->label('NAMA')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('slug')->label('SLUG')->sortable(),
+                Tables\Columns\IconColumn::make('is_active')->boolean()->label('AKTIF'),
+                Tables\Columns\TextColumn::make('created_at')->label('DIBUAT')->dateTime(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('is_active')

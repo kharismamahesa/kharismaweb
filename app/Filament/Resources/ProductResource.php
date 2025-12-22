@@ -16,9 +16,13 @@ class ProductResource extends Resource
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
+
     protected static ?string $navigationLabel = 'Produk';
+
     protected static ?string $pluralModelLabel = 'Produk';
+
     protected static ?string $modelLabel = 'Produk';
+
     protected static ?string $navigationGroup = 'Toko';
 
     public static function form(Form $form): Form
@@ -36,8 +40,7 @@ class ProductResource extends Resource
                     ->required()
                     ->live(onBlur: true)
                     ->afterStateUpdated(
-                        fn($state, callable $set) =>
-                        $set('slug', Str::slug($state))
+                        fn ($state, callable $set) => $set('slug', Str::slug($state))
                     ),
 
                 Forms\Components\TextInput::make('slug')
@@ -106,8 +109,7 @@ class ProductResource extends Resource
                             ->addActionLabel('Tambah Gambar')
                             ->defaultItems(0)
                             ->itemLabel(
-                                fn(array $state): ?string =>
-                                $state['is_primary'] ? 'Gambar Utama' : 'Gambar Tambahan'
+                                fn (array $state): ?string => $state['is_primary'] ? 'Gambar Utama' : 'Gambar Tambahan'
                             )
                             ->collapsible(),
                     ])
@@ -142,6 +144,7 @@ class ProductResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('selling_price')
+                    ->label('HARGA')
                     ->money('IDR')
                     ->sortable(),
 
@@ -152,7 +155,7 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->label('STATUS')
-                    ->color(fn(string $state) => match ($state) {
+                    ->color(fn (string $state) => match ($state) {
                         'draft' => 'gray',
                         'published' => 'success',
                         'archived' => 'warning',

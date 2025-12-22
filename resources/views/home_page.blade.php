@@ -18,7 +18,7 @@
         }
 
         .hero {
-            background: linear-gradient(135deg, #198754, #20c997);
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
             position: relative;
             overflow: hidden;
@@ -42,13 +42,13 @@
         }
 
         .btn-buy {
-            background: linear-gradient(135deg, #198754, #20c997);
+            background: linear-gradient(135deg, #10b981, #059669);
             border: none;
             color: white;
         }
 
         .btn-buy:hover {
-            background: linear-gradient(135deg, #20c997, #198754);
+            background: linear-gradient(135deg, #059669, #10b981);
         }
     </style>
 </head>
@@ -64,10 +64,10 @@
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="#products" class="nav-link">Produk</a>
+                        <a href="#" class="nav-link">Produk</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#contact" class="nav-link">Kontak</a>
+                        <a href="#" class="nav-link">Pre Order</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center mt-2 mt-lg-0 ms-lg-auto">
@@ -82,14 +82,14 @@
         <div class="container">
             <h1 class="display-4 fw-bold">Selamat Datang di Toko Kharisma! <i class="bi bi-cart-check"></i></h1>
             <p class="lead mt-3">Produk berkualitas dan harga terjangkau</p>
-            <a href="#products" class="btn btn-light btn-lg mt-3">
-                Lihat Produk
+            <a href="#preorder" class="btn btn-light btn-lg mt-3">
+                Lihat Pre Order
             </a>
         </div>
     </section>
 
     <!-- PRODUCTS (List Produk) -->
-    <section id="products" class="py-5 bg-light">
+    <section id="preorder" class="py-5 bg-light">
         <div class="container">
             <h2 class="fw-bold text-center mb-5">Produk Unggulan</h2>
             <div class="row g-4">

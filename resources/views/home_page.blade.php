@@ -50,6 +50,26 @@
         .btn-buy:hover {
             background: linear-gradient(135deg, #059669, #10b981);
         }
+
+        /* Thumbnail utility */
+        .thumbnail {
+            width: 100%;
+            height: var(--thumb-height, 200px);
+            object-fit: cover;
+            display: block;
+        }
+
+        .thumbnail-sm {
+            --thumb-height: 120px;
+        }
+
+        .thumbnail-md {
+            --thumb-height: 200px;
+        }
+
+        .thumbnail-lg {
+            --thumb-height: 300px;
+        }
     </style>
 </head>
 
@@ -88,87 +108,77 @@
         </div>
     </section>
 
-    <!-- PRODUCTS (List Produk) -->
+    <!-- PREORDER (Active + list) -->
     <section id="preorder" class="py-5 bg-light">
         <div class="container">
-            <h2 class="fw-bold text-center mb-5">Produk Unggulan</h2>
-            <div class="row g-4">
-                <!-- Produk 1: Nasi Goreng -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                    <div class="card product-card shadow-sm h-100">
-                        <img src="{{ url('storage/products/01KD22DG3QHJJ8E7TFKGNE5HV8.png') }}"
-                            class="card-img-top thumbnail thumbnail-sm" alt="Nasi Goreng">
-                        <div class="card-body">
-                            <h5 class="card-title">Nasi Goreng Spesial</h5>
-                            <p class="card-text">Nasi goreng hangat dengan telur dan sambal khas. Harga: Rp 25.000</p>
-                            <button class="btn btn-buy w-100">Beli Sekarang</button>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                    <div class="card product-card shadow-sm h-100">
-                        <img src="https://source.unsplash.com/300x200/?rendang,food"
-                            class="card-img-top thumbnail thumbnail-sm" alt="Rendang">
-                        <div class="card-body">
-                            <h5 class="card-title">Rendang Daging</h5>
-                            <p class="card-text">Rendang empuk dengan bumbu meresap. Harga: Rp 60.000</p>
-                            <button class="btn btn-buy w-100">Beli Sekarang</button>
-                        </div>
-                    </div>
-                </div>
+            @forelse ($preorders as $po)
+                <!-- Judul PO -->
+                <h2 class="fw-bold text-center mb-3">{{ $po->title }}</h2>
 
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                    <div class="card product-card shadow-sm h-100">
-                        <img src="https://source.unsplash.com/300x200/?sate,skewer"
-                            class="card-img-top thumbnail thumbnail-md" alt="Sate Ayam">
-                        <div class="card-body">
-                            <h5 class="card-title">Sate Ayam Madura</h5>
-                            <p class="card-text">Sate juicy dengan bumbu kacang khas. Harga: Rp 30.000</p>
-                            <button class="btn btn-buy w-100">Beli Sekarang</button>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-center mb-4">
+                    PO ditutup:
+                    {{ optional($po->closed_at)->format('d M Y') ?? '-' }}
 
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                    <div class="card product-card shadow-sm h-100">
-                        <img src="https://source.unsplash.com/300x200/?bread,roti"
-                            class="card-img-top thumbnail thumbnail-md" alt="Roti">
-                        <div class="card-body">
-                            <h5 class="card-title">Roti Tawar Spesial</h5>
-                            <p class="card-text">Roti lembut cocok untuk sarapan. Harga: Rp 15.000</p>
-                            <button class="btn btn-buy w-100">Beli Sekarang</button>
-                        </div>
-                    </div>
-                </div>
+                    @if (!empty($po->estimated_arrival_at))
+                        | Estimasi tiba:
+                        {{ optional($po->estimated_arrival_at)->format('d M Y') }}
+                    @endif
+                    </small>
 
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                    <div class="card product-card shadow-sm h-100">
-                        <img src="https://source.unsplash.com/300x200/?kopi,coffee"
-                            class="card-img-top thumbnail thumbnail-md" alt="Kopi">
-                        <div class="card-body">
-                            <h5 class="card-title">Kopi Tubruk</h5>
-                            <p class="card-text">Kopi pilihan, aroma kuat dan nikmat. Harga: Rp 18.000</p>
-                            <button class="btn btn-buy w-100">Beli Sekarang</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="row g-4 mb-5">
+                    @foreach ($po->items as $item)
+                        @php
+                            $product = $item->product;
 
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                    <div class="card product-card shadow-sm h-100">
-                        <img src="https://source.unsplash.com/300x200/?cake,kue"
-                            class="card-img-top thumbnail thumbnail-md" alt="Kue">
-                        <div class="card-body">
-                            <h5 class="card-title">Kue Lapis</h5>
-                            <p class="card-text">Kue tradisional manis dan lembut. Harga: Rp 20.000</p>
-                            <button class="btn btn-buy w-100">Beli Sekarang</button>
-                        </div>
-                    </div>
+                            $image =
+                                $product && $product->media->first()
+                                    ? asset('storage/' . $product->media->first()->file_path)
+                                    : 'https://via.placeholder.com/400x300?text=No+Image';
+                        @endphp
+
+                        @if ($product)
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                                <div class="card product-card shadow-sm h-100 position-relative">
+                                    <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">
+                                        Preorder
+                                    </span>
+
+                                    <img src="{{ $image }}" class="card-img-top" alt="{{ $product->name }}">
+
+                                    <div class="card-body d-flex flex-column">
+                                        <h6 class="card-title">
+                                            {{ $product->name }} </h6>
+
+                                        <p class="card-text small text-muted">
+                                            {{ \Illuminate\Support\Str::limit($product->description ?? '-', 60) }}
+                                        </p>
+
+                                        <div class="mt-auto">
+                                            <div class="fw-bold mb-2">
+                                                Rp
+                                                {{ number_format($item->preorder_price ?? ($product->selling_price ?? 0), 0, ',', '.') }}
+                                            </div>
+
+                                            <button class="btn btn-warning w-100">
+                                                Preorder Sekarang
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
-            </div>
-            <!-- Catatan: Produk ini contoh makanan (mockup). Gambar diambil dari Unsplash (query image) untuk keperluan demo. Ganti dengan data dari database menggunakan loop. -->
+            @empty
+                <p class="text-center text-muted">
+                    Saat ini belum ada preorder yang aktif.
+                </p>
+            @endforelse
+
         </div>
     </section>
+
 
     <!-- CONTACT (Footer untuk Kontak) -->
     <section id="contact" class="py-5 bg-dark text-light">

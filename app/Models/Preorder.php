@@ -20,6 +20,12 @@ class Preorder extends Model
         'created_by',
     ];
 
+    protected $casts = [
+        'started_at' => 'datetime',
+        'closed_at' => 'datetime',
+        'estimated_arrival_at' => 'datetime',
+    ];
+
     public function items()
     {
         return $this->hasMany(PoItem::class, 'po_id');

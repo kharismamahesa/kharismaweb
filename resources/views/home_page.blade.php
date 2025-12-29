@@ -5,9 +5,9 @@
 @section('content')
 
     {{-- HERO --}}
-    <section class="hero min-vh-100 d-flex align-items-center text-center">
+    <section class="hero d-flex align-items-center text-center">
         <div class="container position-relative">
-            <h1 class="display-4 fw-bold">
+            <h1 class="display-4 fw-bold mt-3">
                 Selamat Datang di Toko Kharisma <i class="bi bi-cart-check"></i>
             </h1>
 
@@ -21,13 +21,9 @@
         </div>
     </section>
 
-    {{-- PREORDER --}}
     <section id="preorder" class="py-5 bg-light">
         <div class="container">
-
             @forelse ($preorders as $po)
-
-                {{-- Judul Preorder --}}
                 <h2 class="fw-bold text-center mb-2">
                     {{ $po->title }}
                 </h2>
@@ -41,8 +37,6 @@
                         {{ optional($po->estimated_arrival_at)->format('d M Y') }}
                     @endif
                 </p>
-
-                {{-- GRID PRODUK --}}
                 <div class="row g-4 mb-5">
 
                     @foreach ($po->items as $item)
@@ -99,7 +93,7 @@
 
             @empty
                 <p class="text-center text-muted">
-                    Saat ini belum ada preorder yang aktif.
+                    Saat ini belum ada preorder yang tersedia.
                 </p>
             @endforelse
 

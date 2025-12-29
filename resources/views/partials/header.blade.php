@@ -2,9 +2,20 @@
     <div class="container">
         <a class="navbar-brand fw-bold" href="{{ url('/') }}">Toko Kharisma</a>
 
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="d-flex align-items-center gap-3 d-lg-none">
+            @auth
+                <a href="{{ route('cart.index') }}" class="text-white position-relative">
+                    <i class="bi bi-cart3 fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        3
+                    </span>
+                </a>
+            @endauth
+
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
 
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav">
@@ -18,9 +29,8 @@
 
             {{-- RIGHT SIDE --}}
             <div class="ms-auto d-flex align-items-center gap-3">
-
                 @auth
-                    <a href="#" class="text-white position-relative">
+                    <a href="{{ route('cart.index') }}" class="text-white position-relative d-none d-lg-inline-block">
                         <i class="bi bi-cart3 fs-5"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             3
@@ -40,18 +50,25 @@
 
                         <ul class="dropdown-menu dropdown-menu-end shadow">
                             <li>
-                                <a class="dropdown-item" href="#">
+                                {{-- <a class="dropdown-item" href="#">
                                     <i class="bi bi-person"></i> Profil
-                                </a>
-                            </li>
+                                </a> --}}
 
-                            @if (auth()->user()->role === 'admin')
-                                <li>
-                                    <a class="dropdown-item" href="/admin">
-                                        <i class="bi bi-speedometer2"></i> Dashboard
-                                    </a>
-                                </li>
-                            @endif
+                                @auth
+                                    @if (auth()->user()->role === 'customer')
+                                        <a class="dropdown-item" href="{{ route('account.profile') }}">
+                                            <i class="bi bi-person"></i> Profil
+                                        </a>
+                                    @endif
+
+                                    @if (auth()->user()->role === 'admin')
+                                        <a class="dropdown-item" href="/admin">
+                                            <i class="bi bi-speedometer2"></i> Dashboard
+                                        </a>
+                                    @endif
+                                @endauth
+
+                            </li>
 
                             <li>
                                 <hr class="dropdown-divider">

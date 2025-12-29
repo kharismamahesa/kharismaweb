@@ -17,3 +17,16 @@
 <footer class="bg-black text-center text-muted py-3">
     © {{ date('Y') }} Toko Online Kharisma v1.0
 </footer>
+
+<script>
+    // function loadCartCount() {
+    //     $.get('/cart/count', function(res) {
+    //         // $('#cartCount').text(res.count);
+    //         console.log('Cart count:', res.count);
+    //     });
+    // }
+
+    // $(document).ready(function() {
+    //     loadCartCount();
+    // });
+</script>

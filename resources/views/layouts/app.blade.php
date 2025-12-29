@@ -36,6 +36,16 @@
             opacity: 0.1;
         }
 
+        .hero {
+            min-height: 45vh;
+        }
+
+        @media (min-width: 992px) {
+            .hero {
+                min-height: 60vh;
+            }
+        }
+
         .product-card {
             transition: .3s;
         }
@@ -43,6 +53,21 @@
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, .2);
+        }
+
+        .navbar {
+            height: 80px;
+        }
+
+        .app-content {
+            flex: 1 0 auto;
+            padding-top: 80px;
+            /* offset navbar fixed-top */
+        }
+
+        /* footer */
+        footer {
+            margin-top: auto;
         }
     </style>
 
@@ -53,7 +78,7 @@
 
     @include('partials.header')
 
-    <main>
+    <main class="app-content">
         @yield('content')
     </main>
 

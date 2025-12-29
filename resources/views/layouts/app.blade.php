@@ -55,19 +55,8 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, .2);
         }
 
-        .navbar {
-            height: 80px;
-        }
-
         .app-content {
-            flex: 1 0 auto;
-            padding-top: 80px;
-            /* offset navbar fixed-top */
-        }
-
-        /* footer */
-        footer {
-            margin-top: auto;
+            padding-top: 55px;
         }
     </style>
 

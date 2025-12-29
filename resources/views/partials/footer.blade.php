@@ -1,4 +1,4 @@
-<section id="contact" class="py-5 bg-dark text-light mt-5">
+<section id="contact" class="py-5 bg-dark text-light">
     <div class="container text-center">
         <h5 class="fw-bold mb-3">Kontak Kami</h5>
 
